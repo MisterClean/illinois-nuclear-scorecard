@@ -1,11 +1,16 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "Monthly Nuclear Generation - Northern Illinois"
+output:
+  html_document:
+    df_print: paged
+  md_document: default
 ---
+Report created by [@cornoisseur](https://twitter.com/cornoisseur)
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+**Methodology**
+
+This report combines seasonal capacity figures as reported by EIA Form 860, and daily Power Reactor Status reporting from the Nuclear Regulatory Commission to estimate daily electricity generation in Northern Illinois. Grid Load for PJM Interconnect ComEd is exported from [GridStatus.io](https://gridstatus.io/). Open an issue on GitHub if you have feedback.
 
 ```{r}
 library(tidyverse)
@@ -88,15 +93,15 @@ load_and_nuclear_report <- daily_electricity_consumed %>%
 write.csv(load_and_nuclear_report, "load_and_nuclear_report.csv", row.names = FALSE)
 
 # Melt the dataframe to long format for plotting with ggplot
-long_dataframe <- final_dataframe %>%
+long_load_and_nuclear_report <- load_and_nuclear_report %>%
   pivot_longer(cols = c(total_electricity_consumed, estimated_total_nuclear_electricity_generated),
                names_to = "variable", values_to = "value")
 
 # Convert the 'value' column from MWh to GWh for plotting
-long_dataframe$value <- long_dataframe$value / 1000
+long_load_and_nuclear_report$value <- long_load_and_nuclear_report$value / 1000
 
 # Create the line chart with values in GWh
-ggplot(long_dataframe, aes(x = date_eastern, y = value, group = variable)) +
+ggplot(long_load_and_nuclear_report, aes(x = date_eastern, y = value, group = variable)) +
   geom_line(aes(color = variable)) +
   scale_color_manual(values = c("total_electricity_consumed" = "#41B6E6", 
                                 "estimated_total_nuclear_electricity_generated" = "#E4002B")) +
@@ -120,25 +125,3 @@ ggplot(long_dataframe, aes(x = date_eastern, y = value, group = variable)) +
 ## Also Saved the chart here https://datawrapper.dwcdn.net/fHm67/1/
 
 ```
-```{r}
-# Create a kable table and style it
-table_output <- kable(load_and_nuclear_report, "html", align = c('l', 'c', 'c'),
-                      col.names = c("Date", "Total Electricity Consumed (MWh)", "Estimated Total Nuclear Electricity Generated (MWh)")) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-                full_width = F, 
-                position = "left") %>%
-  column_spec(1, width = "150px") %>% # Adjust column 1 width
-  column_spec(2, width = "200px") %>% # Adjust column 2 width
-  column_spec(3, width = "200px") %>% # Adjust column 3 width
-  scroll_box(width = "100%", height = "500px")
-
-# Display the styled table
-table_output
-```
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
-
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
-
