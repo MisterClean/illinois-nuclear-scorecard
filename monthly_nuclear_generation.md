@@ -1,8 +1,13 @@
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you
-execute code within the notebook, the results appear beneath the code.
+Report created by [@cornoisseur](https://twitter.com/cornoisseur)
 
-Try executing this chunk by clicking the *Run* button within the chunk
-or by placing your cursor inside it and pressing *Cmd+Shift+Enter*.
+**Methodology**
+
+This report combines seasonal capacity figures as reported by EIA Form
+860, and daily Power Reactor Status reporting from the Nuclear
+Regulatory Commission to estimate daily electricity generation in
+Northern Illinois. Grid Load for PJM Interconnect ComEd is exported from
+[GridStatus.io](https://gridstatus.io/). Open an issue on GitHub if you
+have feedback.
 
     library(tidyverse)
 
@@ -143,15 +148,3 @@ or by placing your cursor inside it and pressing *Cmd+Shift+Enter*.
 ![](monthly_nuclear_generation_files/figure-markdown_strict/unnamed-chunk-1-1.png)
 
     ## Also Saved the chart here https://datawrapper.dwcdn.net/fHm67/1/
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or
-by pressing *Cmd+Option+I*.
-
-When you save the notebook, an HTML file containing the code and output
-will be saved alongside it (click the *Preview* button or press
-*Cmd+Shift+K* to preview the HTML file).
-
-The preview shows you a rendered HTML copy of the contents of the
-editor. Consequently, unlike *Knit*, *Preview* does not run any R code
-chunks. Instead, the output of the chunk when it was last run in the
-editor is displayed.
